@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace SuperHeroAPI.Controllers
 {
@@ -25,7 +26,16 @@ namespace SuperHeroAPI.Controllers
             }
         };
 
-
+        private readonly DataContext _context;
+        public SuperHeroController(DataContext context)
+        {
+            _context = context;
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SuperHero>>> Get()
+        {
+            return Ok(await _context.SuperHeroes.TolistAsync());
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SuperHero>>> Get()
